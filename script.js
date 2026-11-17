@@ -88,25 +88,3 @@ btnAdmin.addEventListener('click', function() {
 
 // 7. Jalankan fungsi tampilkanData pertama kali saat halaman dibuka
 tampilkanData();
-
-// Bagian Kode Tombol Admin di script.js
-btnAdmin.addEventListener('click', function() {
-    const pin = prompt("Masukkan PIN Admin:");
-    
-    if (pin === "1234") {
-        const aksiAdmin = prompt("Menu Admin:\n1. Hapus Semua Data Absensi\n\nMasukkan nomor pilihan:");
-        
-        if (aksiAdmin === "1") {
-            if (confirm("PERINGATAN: Yakin ingin menghapus seluruh data absensi?")) {
-                dataAbsensi = [];
-                localStorage.removeItem('absensiKelas');
-                tampilkanData();
-                alert("Data absensi berhasil direset oleh Admin.");
-            }
-        } else if (aksiAdmin !== null) {
-            alert("Pilihan tidak valid.");
-        }
-    } else if (pin !== null) {
-        alert("PIN salah! Akses ditolak.");
-    }
-});
