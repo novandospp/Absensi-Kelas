@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aplikasi Absensi Kelas Digital</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <div class="container">
+        <h1>Absensi Kelas Digital</h1>
+        <p id="tanggalHariIni">Tanggal: -</p>
+
+        <!-- Form Input Absensi -->
+        <form id="formAbsensi">
+            <div class="input-group">
+                <label for="namaSiswa">Nama Siswa:</label>
+                <input type="text" id="namaSiswa" placeholder="Masukkan nama lengkap..." required>
+            </div>
+
+            <div class="input-group">
+                <label for="statusKehadiran">Status Kehadiran:</label>
+                <select id="statusKehadiran">
+                    <option value="Hadir">Hadir</option>
+                    <option value="Izin">Izin</option>
+                    <option value="Sakit">Sakit</option>
+                    <option value="Alfa">Alfa</option>
+                </select>
+            </div>
+
+            <button type="submit" id="btnSimpan">Simpan Absensi</button>
+        </form>
+
+        <!-- Ringkasan Jumlah -->
+        <div class="ringkasan">
+            <span>Total Tercatat: <strong id="totalSiswa">0</strong></span>
+            <button id="btnReset" class="btn-merah">Reset Data</button>
+        </div>
+
+        <!-- Tabel Daftar Kehadiran -->
+        <table>
+            <thead>
+                <tr>
+                    <th>No</th>
+                    <th>Nama Siswa</th>
+                    <th>Status</th>
+                    <th>Waktu</th>
+                </tr>
+            </thead>
+            <tbody id="tabelBody">
+                <!-- Data absensi akan muncul di sini lewat JavaScript -->
+            </tbody>
+        </table>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
