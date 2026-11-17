@@ -4,7 +4,7 @@ const inputNama = document.getElementById('namaSiswa');
 const inputStatus = document.getElementById('statusKehadiran');
 const tabelBody = document.getElementById('tabelBody');
 const totalSiswa = document.getElementById('totalSiswa');
-const btnReset = document.getElementById('btnReset');
+const btnAdmin = document.getElementById('btnAdmin');
 const teksTanggal = document.getElementById('tanggalHariIni');
 
 // 2. Menampilkan tanggal hari ini otomatis
@@ -12,12 +12,12 @@ const hariIni = new Date();
 const opsiTanggal = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
 teksTanggal.textContent = "Tanggal: " + hariIni.toLocaleDateString('id-ID', opsiTanggal);
 
-// 3. Mengambil data dari Local Storage (jika sudah ada sebelumnya)
+// 3. Mengambil data dari Local Storage
 let dataAbsensi = JSON.parse(localStorage.getItem('absensiKelas')) || [];
 
 // 4. Fungsi untuk menampilkan data ke dalam tabel
 function tampilkanData() {
-    tabelBody.innerHTML = ''; // Kosongkan tabel sebelum diisi ulang
+    tabelBody.innerHTML = ''; 
     
     dataAbsensi.forEach((item, index) => {
         const baris = document.createElement('tr');
@@ -32,46 +32,54 @@ function tampilkanData() {
         tabelBody.appendChild(baris);
     });
 
-    // Perbarui angka total tercatat
     totalSiswa.textContent = dataAbsensi.length;
 }
 
-// 5. Menangani saat form absensi disubmit (tombol Simpan diklik)
+// 5. Menangani saat form absensi disubmit
 formAbsensi.addEventListener('submit', function(e) {
-    e.preventDefault(); // Mencegah halaman refresh otomatis
+    e.preventDefault();
 
     const nama = inputNama.value.trim();
     const status = inputStatus.value;
     
-    // Mengambil jam & menit saat absen
     const sekarang = new Date();
     const waktu = sekarang.toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit' });
 
     if (nama !== '') {
-        // Masukkan data baru ke dalam array
         dataAbsensi.push({
             nama: nama,
             status: status,
             waktu: waktu
         });
 
-        // Simpan ke memori lokal browser (Local Storage)
         localStorage.setItem('absensiKelas', JSON.stringify(dataAbsensi));
-
-        // Perbarui tampilan tabel & kosongkan kotak input nama
         tampilkanData();
         inputNama.value = '';
     }
 });
 
-// 6. Menangani tombol Reset Data
-btnReset.addEventListener('click', function() {
-    if (confirm('Apakah Anda yakin ingin menghapus semua data absensi hari ini?')) {
-        dataAbsensi = [];
-        localStorage.removeItem('absensiKelas');
-        tampilkanData();
+// 6. Fitur Kontrol Admin (Hanya bisa diakses dengan PIN / Password)
+btnAdmin.addEventListener('click', function() {
+    const pin = prompt("Masukkan PIN Admin:");
+    
+    // PIN admin diset "1234" untuk contoh proyek sekolah
+    if (pin === "1234") {
+        const aksiAdmin = prompt("Menu Admin:\n1. Hapus Semua Data Absensi\n\nMasukkan nomor pilihan:");
+        
+        if (aksiAdmin === "1") {
+            if (confirm("PERINGATAN: Yakin ingin menghapus seluruh data absensi?")) {
+                dataAbsensi = [];
+                localStorage.removeItem('absensiKelas');
+                tampilkanData();
+                alert("Data absensi berhasil direset oleh Admin.");
+            }
+        } else {
+            alert("Pilihan tidak valid.");
+        }
+    } else if (pin !== null) {
+        alert("PIN salah! Anda tidak memiliki akses admin.");
     }
 });
 
-// 7. Jalankan fungsi tampilkanData pertama kali saat halaman dibuka
+// 7. Jalankan fungsi tampilkanData pertama kali
 tampilkanData();
